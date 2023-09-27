@@ -59,6 +59,7 @@ def save_info():
 def clear_content():
     website_entry.delete(0, END)
     password_entry.delete(0, END)
+    
 # ---------------------------- FIND PASSWORD ------------------------------- #
 
 def find_password():
