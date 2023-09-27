@@ -55,11 +55,28 @@ def save_info():
                 
         finally:
             clear_content()
-            
+
 def clear_content():
     website_entry.delete(0, END)
     password_entry.delete(0, END)
-    
+# ---------------------------- FIND PASSWORD ------------------------------- #
+
+def find_password():
+    website = website_entry.get()
+    try:
+        with open("data.json") as file:
+            data = json.load(file)
+    except FileNotFoundError as error_message:
+        messagebox.showinfo(title="Error", message= f"{error_message}")
+
+    else:
+        if website in data: 
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website, message= f"Email: {email}, Password: {password}")
+        else:
+            messagebox.showinfo(title=website, message= "No data found")        
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -84,22 +101,25 @@ password_label.grid(column=0, row= 3)
 
 #Buttons
 
-generate_password_button = Button(text="Generate Password", width=10, command=generate_password)
+generate_password_button = Button(text="Generate Password", width=12, command=generate_password)
 generate_password_button.grid(column=2, row= 3)
 
-add_button = Button(text="Add",width=36,command=lambda:[save_info(), clear_content()])
+search_button = Button(text="Search",width=12, command=find_password)
+search_button.grid(column=2, row=1)
+
+add_button = Button(text="Add",width=42,command=lambda:[save_info(), clear_content()])
 add_button.grid(column=1, row= 4,columnspan=2)
 
 #Entries
-website_entry = Entry(width=35)
-website_entry.grid(column=1, row = 1, columnspan=2)
+website_entry = Entry(width=25)
+website_entry.grid(column=1, row = 1)
 website_entry.focus()
 
-email_entry = Entry(width=35)
+email_entry = Entry(width=42)
 email_entry.grid(column=1, row = 2, columnspan=2)
 email_entry.insert(0, "khai@gmail.com")
 
-password_entry = Entry(width=21)
+password_entry = Entry(width=25)
 password_entry.grid(column=1, row = 3, columnspan=1)
 
 window.mainloop()
